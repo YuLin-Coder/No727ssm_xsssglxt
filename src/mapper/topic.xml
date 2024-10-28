@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.dao.TopicDAO">
+	<resultMap type="topic" id="topicMap">
+		<id property="topicid" column="topicid" />
+		<result property="roomsid" column="roomsid" />
+		<result property="num" column="num" />
+		<result property="contents" column="contents" />
+		<result property="addtime" column="addtime" />
+		<result property="roomsname" column="roomsname" />
+		<result property="adminid" column="adminid" />
+	</resultMap>
+	<!-- 插入语句 DAO通过id调用此配置 -->
+	<insert id="insertTopic" parameterType="topic">
+		insert into topic(topicid , roomsid , num , contents , addtime ) values(#{topicid} , #{roomsid} ,
+		#{num} ,
+		#{contents} , #{addtime} )
+	</insert>
+	<!-- 更新语句 DAO通过id调用此配置 -->
+	<update id="updateTopic" parameterType="topic">
+		update topic set roomsid=#{roomsid} , num=#{num} , contents=#{contents} , addtime=#{addtime}
+		where
+		topicid=#{topicid}
+	</update>
+	<!-- 按主键删除 DAO通过id调用此配置 -->
+	<delete id="deleteTopic" parameterType="String">
+		delete from topic where topicid = #{topicid}
+	</delete>
+	<!-- 查询全部信息 DAO通过id调用此配置 -->
+	<select id="getAllTopic" resultMap="topicMap">
+		select a.* , b.roomsname from topic a , rooms b where 1=1 and a.roomsid = b.roomsid order by topicid
+		desc
+	</select>
+
+	<!-- 按主键查询 DAO通过id调用此配置 -->
+	<select id="getTopicById" parameterType="String" resultMap="topicMap">
+		select a.* , b.roomsname from topic a , rooms b where 1=1 and a.roomsid =
+		b.roomsid and
+		topicid=#{topicid} order by topicid desc
+	</select>
+	<!-- 按条件精确查询 DAO通过id调用此配置 -->
+	<select id="getTopicByCond" parameterType="topic" resultMap="topicMap">
+		select a.* , b.roomsname from topic a , rooms b where 1=1 and a.roomsid = b.roomsid
+		<if test="roomsid != null and '' != roomsid">
+			and a.roomsid = #{roomsid}
+		</if>
+		<if test="num != null and '' != num">
+			and a.num = #{num}
+		</if>
+		<if test="contents != null and '' != contents">
+			and a.contents = #{contents}
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime = #{addtime}
+		</if>
+		<if test="adminid != null and '' != adminid">
+			and b.adminid = #{adminid}
+		</if>
+	</select>
+	<!-- 按条件模糊查询 DAO通过id调用此配置 -->
+	<select id="getTopicByLike" parameterType="topic" resultMap="topicMap">
+		select a.* , b.roomsname from topic a , rooms b where 1=1 and a.roomsid = b.roomsid
+		<if test="roomsid != null and '' != roomsid">
+			and b.roomsname like CONCAT('%', CONCAT(#{roomsid}, '%'))
+		</if>
+		<if test="num != null and '' != num">
+			and a.num like CONCAT('%', CONCAT(#{num}, '%'))
+		</if>
+		<if test="contents != null and '' != contents">
+			and a.contents like CONCAT('%', CONCAT(#{contents}, '%'))
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime like CONCAT('%', CONCAT(#{addtime}, '%'))
+		</if>
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.dao.SigninDAO">
+	<resultMap type="signin" id="signinMap">
+		<id property="signinid" column="signinid" />
+		<result property="usersid" column="usersid" />
+		<result property="roomsid" column="roomsid" />
+		<result property="addtime" column="addtime" />
+		<result property="realname" column="realname" />
+		<result property="roomsname" column="roomsname" />
+	</resultMap>
+	<!-- 插入语句 DAO通过id调用此配置 -->
+	<insert id="insertSignin" parameterType="signin">  
+		insert into signin(signinid  , usersid  , roomsid  , addtime ) values(#{signinid}  , #{usersid}   , #{roomsid}   , #{addtime} )
+	</insert>
+	<!-- 更新语句 DAO通过id调用此配置 -->
+		<update id="updateSignin" parameterType="signin">
+update signin set  usersid=#{usersid}  , roomsid=#{roomsid}  , addtime=#{addtime}  where signinid=#{signinid}
+	</update>
+	<!-- 按主键删除 DAO通过id调用此配置 -->
+	<delete id="deleteSignin" parameterType="String">
+		delete from signin where signinid = #{signinid}
+	</delete>
+	<!-- 查询全部信息 DAO通过id调用此配置  -->
+	<select id="getAllSignin" resultMap="signinMap">
+select a.* , b.realname , c.roomsname  from signin a , users b , rooms c  where 1=1 and a.usersid = b.usersid and a.roomsid = c.roomsid  order by signinid desc
+	</select>
+
+	<!-- 按主键查询 DAO通过id调用此配置  -->
+	<select id="getSigninById" parameterType="String" resultMap="signinMap">
+select a.* , b.realname , c.roomsname  from signin a , users b , rooms c  where 1=1 and a.usersid = b.usersid and a.roomsid = c.roomsid and signinid=#{signinid} order by signinid desc
+	</select>
+	<!-- 按条件精确查询 DAO通过id调用此配置  -->
+	<select id="getSigninByCond" parameterType="signin" resultMap="signinMap">
+select a.* , b.realname , c.roomsname  from signin a , users b , rooms c  where 1=1 and a.usersid = b.usersid and a.roomsid = c.roomsid 
+		<if test="usersid != null and '' != usersid">
+			and a.usersid = #{usersid}  
+		</if>
+		<if test="roomsid != null and '' != roomsid">
+			and a.roomsid = #{roomsid}  
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime = #{addtime}  
+		</if>
+	</select>
+	<!-- 按条件模糊查询 DAO通过id调用此配置  -->
+	<select id="getSigninByLike" parameterType="signin" resultMap="signinMap">
+select a.* , b.realname , c.roomsname  from signin a , users b , rooms c  where 1=1 and a.usersid = b.usersid and a.roomsid = c.roomsid 
+		<if test="usersid != null and '' != usersid">
+			and b.realname like CONCAT('%', CONCAT(#{usersid}, '%'))
+		</if>
+		<if test="roomsid != null and '' != roomsid">
+			and c.roomsname like CONCAT('%', CONCAT(#{roomsid}, '%'))
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime like CONCAT('%', CONCAT(#{addtime}, '%'))
+		</if>
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

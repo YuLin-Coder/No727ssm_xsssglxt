@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.dao.RoomsDAO">
+	<resultMap type="rooms" id="roomsMap">
+		<id property="roomsid" column="roomsid" />
+		<result property="roomsname" column="roomsname" />
+		<result property="num" column="num" />
+		<result property="mianji" column="mianji" />
+		<result property="chaoxiang" column="chaoxiang" />
+		<result property="addtime" column="addtime" />
+		<result property="adminid" column="adminid" />
+		<result property="memo" column="memo" />
+		<result property="realname" column="realname" />
+	</resultMap>
+	<!-- 插入语句 DAO通过id调用此配置 -->
+	<insert id="insertRooms" parameterType="rooms">  
+		insert into rooms(roomsid  , roomsname  , num  , mianji  , chaoxiang  , addtime  , adminid  , memo ) values(#{roomsid}  , #{roomsname}   , #{num}   , #{mianji}   , #{chaoxiang}   , #{addtime}   , #{adminid}   , #{memo} )
+	</insert>
+	<!-- 更新语句 DAO通过id调用此配置 -->
+		<update id="updateRooms" parameterType="rooms">
+update rooms set  roomsname=#{roomsname}  , num=#{num}  , mianji=#{mianji}  , chaoxiang=#{chaoxiang}  , addtime=#{addtime}  , adminid=#{adminid}  , memo=#{memo}  where roomsid=#{roomsid}
+	</update>
+	<!-- 按主键删除 DAO通过id调用此配置 -->
+	<delete id="deleteRooms" parameterType="String">
+		delete from rooms where roomsid = #{roomsid}
+	</delete>
+	<!-- 查询全部信息 DAO通过id调用此配置  -->
+	<select id="getAllRooms" resultMap="roomsMap">
+select a.* , b.realname  from rooms a , admin b  where 1=1 and a.adminid = b.adminid  order by roomsid desc
+	</select>
+
+	<!-- 按主键查询 DAO通过id调用此配置  -->
+	<select id="getRoomsById" parameterType="String" resultMap="roomsMap">
+select a.* , b.realname  from rooms a , admin b  where 1=1 and a.adminid = b.adminid and roomsid=#{roomsid} order by roomsid desc
+	</select>
+	<!-- 按条件精确查询 DAO通过id调用此配置  -->
+	<select id="getRoomsByCond" parameterType="rooms" resultMap="roomsMap">
+select a.* , b.realname  from rooms a , admin b  where 1=1 and a.adminid = b.adminid 
+		<if test="roomsname != null and '' != roomsname">
+			and a.roomsname = #{roomsname}  
+		</if>
+		<if test="num != null and '' != num">
+			and a.num = #{num}  
+		</if>
+		<if test="mianji != null and '' != mianji">
+			and a.mianji = #{mianji}  
+		</if>
+		<if test="chaoxiang != null and '' != chaoxiang">
+			and a.chaoxiang = #{chaoxiang}  
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime = #{addtime}  
+		</if>
+		<if test="adminid != null and '' != adminid">
+			and a.adminid = #{adminid}  
+		</if>
+		<if test="memo != null and '' != memo">
+			and a.memo = #{memo}  
+		</if>
+	</select>
+	<!-- 按条件模糊查询 DAO通过id调用此配置  -->
+	<select id="getRoomsByLike" parameterType="rooms" resultMap="roomsMap">
+select a.* , b.realname  from rooms a , admin b  where 1=1 and a.adminid = b.adminid 
+		<if test="roomsname != null and '' != roomsname">
+			and a.roomsname like CONCAT('%', CONCAT(#{roomsname}, '%'))
+		</if>
+		<if test="num != null and '' != num">
+			and a.num like CONCAT('%', CONCAT(#{num}, '%'))
+		</if>
+		<if test="mianji != null and '' != mianji">
+			and a.mianji like CONCAT('%', CONCAT(#{mianji}, '%'))
+		</if>
+		<if test="chaoxiang != null and '' != chaoxiang">
+			and a.chaoxiang like CONCAT('%', CONCAT(#{chaoxiang}, '%'))
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime like CONCAT('%', CONCAT(#{addtime}, '%'))
+		</if>
+		<if test="adminid != null and '' != adminid">
+			and b.realname like CONCAT('%', CONCAT(#{adminid}, '%'))
+		</if>
+		<if test="memo != null and '' != memo">
+			and a.memo like CONCAT('%', CONCAT(#{memo}, '%'))
+		</if>
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.dao.VisitDAO">
+	<resultMap type="visit" id="visitMap">
+		<id property="visitid" column="visitid" />
+		<result property="roomsid" column="roomsid" />
+		<result property="usersid" column="usersid" />
+		<result property="name" column="name" />
+		<result property="reason" column="reason" />
+		<result property="thestart" column="thestart" />
+		<result property="theend" column="theend" />
+		<result property="status" column="status" />
+		<result property="memo" column="memo" />
+		<result property="roomsname" column="roomsname" />
+		<result property="realname" column="realname" />
+		<result property="adminid" column="adminid" />
+	</resultMap>
+	<!-- 插入语句 DAO通过id调用此配置 -->
+	<insert id="insertVisit" parameterType="visit">
+		insert into visit(visitid , roomsid , usersid , name , reason , thestart , theend , status , memo
+		) values(#{visitid} , #{roomsid} , #{usersid} , #{name} ,
+		#{reason} , #{thestart} , #{theend} , #{status} , #{memo} )
+	</insert>
+	<!-- 更新语句 DAO通过id调用此配置 -->
+	<update id="updateVisit" parameterType="visit">
+		update visit set roomsid=#{roomsid} , usersid=#{usersid} , name=#{name} , reason=#{reason} ,
+		thestart=#{thestart} , theend=#{theend} , status=#{status} ,
+		memo=#{memo} where visitid=#{visitid}
+	</update>
+	<!-- 按主键删除 DAO通过id调用此配置 -->
+	<delete id="deleteVisit" parameterType="String">
+		delete from visit where visitid = #{visitid}
+	</delete>
+	<!-- 查询全部信息 DAO通过id调用此配置 -->
+	<select id="getAllVisit" resultMap="visitMap">
+		select a.* , b.roomsname , c.realname from visit a , rooms b , users c where 1=1 and a.roomsid =
+		b.roomsid and a.usersid = c.usersid order by visitid desc
+	</select>
+
+	<!-- 按主键查询 DAO通过id调用此配置 -->
+	<select id="getVisitById" parameterType="String" resultMap="visitMap">
+		select a.* , b.roomsname , c.realname from visit a , rooms b , users c where
+		1=1 and a.roomsid = b.roomsid and a.usersid = c.usersid and visitid=#{visitid} order by
+		visitid desc
+	</select>
+	<!-- 按条件精确查询 DAO通过id调用此配置 -->
+	<select id="getVisitByCond" parameterType="visit" resultMap="visitMap">
+		select a.* , b.roomsname , c.realname from visit a , rooms b , users c where 1=1 and a.roomsid = b.roomsid and a.usersid = c.usersid
+		<if test="roomsid != null and '' != roomsid">
+			and a.roomsid = #{roomsid}
+		</if>
+		<if test="usersid != null and '' != usersid">
+			and a.usersid = #{usersid}
+		</if>
+		<if test="name != null and '' != name">
+			and a.name = #{name}
+		</if>
+		<if test="reason != null and '' != reason">
+			and a.reason = #{reason}
+		</if>
+		<if test="thestart != null and '' != thestart">
+			and a.thestart = #{thestart}
+		</if>
+		<if test="theend != null and '' != theend">
+			and a.theend = #{theend}
+		</if>
+		<if test="status != null and '' != status">
+			and a.status = #{status}
+		</if>
+		<if test="memo != null and '' != memo">
+			and a.memo = #{memo}
+		</if>
+		<if test="adminid != null and '' != adminid">
+			and b.adminid = #{adminid}
+		</if>
+
+	</select>
+	<!-- 按条件模糊查询 DAO通过id调用此配置 -->
+	<select id="getVisitByLike" parameterType="visit" resultMap="visitMap">
+		select a.* , b.roomsname , c.realname from visit a , rooms b , users c where 1=1 and a.roomsid = b.roomsid and a.usersid = c.usersid
+		<if test="roomsid != null and '' != roomsid">
+			and b.roomsname like CONCAT('%', CONCAT(#{roomsid}, '%'))
+		</if>
+		<if test="usersid != null and '' != usersid">
+			and c.realname like CONCAT('%', CONCAT(#{usersid}, '%'))
+		</if>
+		<if test="name != null and '' != name">
+			and a.name like CONCAT('%', CONCAT(#{name}, '%'))
+		</if>
+		<if test="reason != null and '' != reason">
+			and a.reason like CONCAT('%', CONCAT(#{reason}, '%'))
+		</if>
+		<if test="thestart != null and '' != thestart">
+			and a.thestart like CONCAT('%', CONCAT(#{thestart}, '%'))
+		</if>
+		<if test="theend != null and '' != theend">
+			and a.theend like CONCAT('%', CONCAT(#{theend}, '%'))
+		</if>
+		<if test="status != null and '' != status">
+			and a.status like CONCAT('%', CONCAT(#{status}, '%'))
+		</if>
+		<if test="memo != null and '' != memo">
+			and a.memo like CONCAT('%', CONCAT(#{memo}, '%'))
+		</if>
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
